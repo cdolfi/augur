@@ -361,6 +361,10 @@ class ThoroughGithubEventCollection(GithubEventCollection):
                 """)
 
             pr_result = connection.execute(query).fetchall()
+            pr_node_url_query = text(f"""
+                    SELECT node_url FROM pull_request_events;
+                """)
+            pr_node_urls = list(connection.execute(pr_node_url_query ).fetchall())
 
         events = []
         contributors = []
@@ -374,6 +378,9 @@ class ThoroughGithubEventCollection(GithubEventCollection):
             
             for event in github_data_access.paginate_resource(event_url):
 
+                if event in pr_node_urls:
+                    continue
+                    
                 event, contributor = self._process_github_event_contributors(event)
 
                 if contributor:
