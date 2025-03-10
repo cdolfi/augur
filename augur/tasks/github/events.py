@@ -380,7 +380,7 @@ class ThoroughGithubEventCollection(GithubEventCollection):
             
             for event in github_data_access.paginate_resource(event_url):
 
-                if event in pr_node_urls:
+                if event['url'] in pr_node_urls:
                     continue
                     
                 event, contributor = self._process_github_event_contributors(event)
