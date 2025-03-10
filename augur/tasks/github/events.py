@@ -362,7 +362,9 @@ class ThoroughGithubEventCollection(GithubEventCollection):
 
             pr_result = connection.execute(query).fetchall()
             pr_node_url_query = text(f"""
-                    SELECT node_url FROM pull_request_events;
+                    SELECT node_url 
+                    FROM pull_request_events
+                    where repo_id={repo_id};
                 """)
             pr_node_urls = list(connection.execute(pr_node_url_query ).fetchall())
 
